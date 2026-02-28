@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Employee Details</title>
+    <style>
+        body { font-family: Arial; padding: 50px; }
+        .card { border: 1px solid #ccc; padding: 20px; width: 300px; border-radius: 10px; }
+    </style>
+</head>
+<body>
+    <h2>Task 4.7: Employee Details</h2>
+    <div class="card">
+        <p><strong>ID:</strong> <span th:text="${employee.id}"></span></p>
+        <p><strong>Name:</strong> <span th:text="${employee.name}"></span></p>
+        <p><strong>Department:</strong> <span th:text="${employee.department}"></span></p>
+    </div>
+</body>
+</html>
