@@ -1,36 +1,50 @@
 # Fullstack Development using Java
 
-A comprehensive learning repository covering full-stack web development with Java, Spring Boot, and related technologies.
+Hands-on practice repository for learning Java fullstack development step by step.
 
-## Project Structure
+## What is in this repo
 
+- Week-based learning folders (`week 1` to `week 8`)
+- Session-wise projects from basics to Spring Boot microservices
+- Multiple Maven projects with source code, tests, and build files
+
+## Project structure
+
+```text
+Fullstack-development-using-Java/
+├── week 1/                # Java basics
+├── week 2/                # OOP practice
+├── week 3/                # Core concepts
+├── week 4/                # Spring foundations
+├── week 5/                # MVC projects
+├── week 6/                # Boot applications
+├── week 7/                # Microservices intro
+└── week 8/                # Service ecosystem
 ```
-week 1/          - Foundations and basics
-week 2/          - Core concepts
-week 3/          - Advanced topics
-week 4/
-  ├── Session 16 - Servlet Demo
-  ├── Session 17 - Autowired Demo
-  ├── Session 18 - Autowired Constructor
-  ├── Session 19 - Autowired Setter
-  └── Session 20 - Spring MVC Employee Management
-```
 
-## Technologies Used
+## Tech stack
 
-- **Java** - Core programming language
-- **Spring Boot** - Framework for building applications
-- **Spring MVC** - Web framework
-- **Dependency Injection** - Spring Autowiring concepts
-- **Servlets** - Java web components
-- **Maven** - Build and dependency management
+- Java
+- Spring Boot
+- Spring MVC
+- Maven
+- Microservices (service registry, API gateway, user/product/account services)
 
-## Key Topics Covered
+## Run a project
 
-- Java fundamentals and OOP
-- Spring Boot setup and configuration
-- Dependency Injection (Constructor, Setter, Field)
-- Spring MVC web applications
-- HTML templates and static resources
-- Application properties configuration
+1. Open any session folder that contains `pom.xml`.
+2. Run: `mvn spring-boot:run`
+3. Run tests (optional): `mvn test`
+
+## Run in Eclipse
+
+1. Clone the repository.
+2. In Eclipse: `File -> Import -> Maven -> Existing Maven Projects`.
+3. Select the repo folder (or a specific session folder) and finish import.
+4. Wait for Maven dependencies to download.
+5. Run a Spring Boot app using `Run As -> Java application.`.
+
+## Purpose
+
+Track progress week by week and keep all learning projects in one place.
 

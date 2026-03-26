@@ -1,0 +1,43 @@
+# Logs and temp files
+*.log
+*.tmp
+*.temp
+
+# Java / Maven build outputs
+**/target/
+**/build/
+!**/src/main/**/target/
+!**/src/test/**/target/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# Generated Maven wrapper jar
+**/.mvn/wrapper/maven-wrapper.jar
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# VS Code
+**/.vscode/
+
+# Keep Eclipse importable project files in git:
+# .project, .classpath, and .settings/ are intentionally NOT ignored.
+
+# Ignore Eclipse transient caches only
+**/.apt_generated/
+**/.springBeans
+**/.sts4-cache/
+
+# IntelliJ transient files
+**/.idea/**/workspace.xml
+**/.idea/**/tasks.xml
+**/.idea/**/shelf/
+
+# NetBeans build outputs
+**/nbproject/private/
+**/nbbuild/
+**/dist/
+**/nbdist/
+**/.nb-gradle/
