@@ -1,0 +1,247 @@
+# Job Portal Management System - Requirements & Dependencies
+# For: GitHub Push & Project Setup
+
+## SYSTEM REQUIREMENTS
+
+### Required Software
+- Java Development Kit (JDK): 17+
+  Download: https://www.oracle.com/java/technologies/downloads/#java17
+
+- Apache Maven: 3.6.0+
+  Download: https://maven.apache.org/download.cgi
+
+- Git: Latest version
+  Download: https://git-scm.com/
+
+### IDE (Choose One)
+- Eclipse IDE: 2023-06+ with Spring Tools 4
+  Download: https://spring.io/tools
+
+- OR IntelliJ IDEA Community Edition: 2023.x+
+  Download: https://www.jetbrains.com/idea/
+
+### Optional - Database (for production)
+- MySQL: 8.0+
+  Download: https://dev.mysql.com/downloads/mysql/
+
+## SYSTEM RESOURCES
+
+- RAM: Minimum 4 GB (8 GB recommended)
+- Disk Space: 2 GB available
+- OS: Windows 10+, macOS 10.14+, or Ubuntu 18.04+
+
+## MAVEN DEPENDENCIES (Managed via pom.xml)
+
+### Core Spring Boot Framework
+spring-boot-starter-web: 3.2.x
+spring-boot-starter-data-jpa: 3.2.x
+spring-boot-starter-security: 6.x
+spring-boot-starter-thymeleaf: 3.2.x
+spring-boot-starter-mail: 3.2.x
+spring-boot-starter-validation: 3.2.x
+spring-boot-starter-actuator: 3.2.x
+spring-boot-starter-logging: 3.2.x
+
+### Database Drivers
+h2: 2.2.x (Development)
+mysql-connector-java: 8.0.x (Production)
+
+### Utilities & Tools
+lombok: 1.18.x
+mapstruct: 1.5.x
+springdoc-openapi-starter-webmvc-ui: 2.x
+
+### Testing
+spring-boot-starter-test: 3.2.x (Includes JUnit 5, Mockito)
+spring-security-test: 6.x
+
+### Additional Libraries
+commons-io: 2.11.x
+commons-lang3: 3.12.x
+commons-fileupload: 1.5.x
+
+## INSTALLATION STEPS
+
+1. Install JDK 17+
+   Verify: java -version
+
+2. Install Maven 3.6.0+
+   Verify: mvn -version
+
+3. Install Git
+   Verify: git --version
+
+4. Clone Repository
+   git clone <repository-url>
+   cd MSP2-FSD
+
+5. Install Dependencies (Maven will handle automatically)
+   mvn clean install
+
+6. Import into IDE
+   Eclipse: File -> Import -> Existing Maven Projects
+   IntelliJ: File -> Open -> Select MSP2-FSD folder
+
+7. Run Application
+   Right-click project -> Run As -> Spring Boot App
+   OR: mvn spring-boot:run
+
+## DATABASE SETUP
+
+### Development (H2 - No Setup Needed)
+Default configuration uses H2 in-memory database
+H2 Console: http://localhost:8080/h2-console
+JDBC URL: jdbc:h2:mem:testdb
+Username: sa
+Password: (empty)
+
+### Production (MySQL)
+1. Create database:
+   mysql -u root -p
+   CREATE DATABASE job_portal;
+   CREATE USER 'jobportal'@'localhost' IDENTIFIED BY 'SecurePassword@123';
+   GRANT ALL PRIVILEGES ON job_portal.* TO 'jobportal'@'localhost';
+   FLUSH PRIVILEGES;
+
+2. Configure: src/main/resources/application-prod.properties
+   spring.datasource.url=jdbc:mysql://localhost:3306/job_portal
+   spring.datasource.username=jobportal
+   spring.datasource.password=SecurePassword@123
+
+3. Run with MySQL:
+   mvn spring-boot:run -Dspring-boot.run.arguments="--spring.profiles.active=prod"
+
+## BUILD & RUN COMMANDS
+
+# Clean build
+mvn clean
+
+# Compile
+mvn compile
+
+# Install dependencies
+mvn install
+
+# Build JAR
+mvn package
+
+# Build without tests (faster)
+mvn package -DskipTests
+
+# Run application
+mvn spring-boot:run
+
+# Run tests
+mvn test
+
+# Run with specific profile
+mvn spring-boot:run -Dspring-boot.run.arguments="--spring.profiles.active=dev"
+
+# Generate coverage report
+mvn clean test jacoco:report
+
+## ACCESS URLS
+
+Application: http://localhost:8080
+Login Page: http://localhost:8080/login
+H2 Console (Dev): http://localhost:8080/h2-console
+Swagger API Docs: http://localhost:8080/swagger-ui.html
+Health Check: http://localhost:8080/actuator/health
+
+## DEFAULT TEST ACCOUNTS
+
+Admin:
+  Email: admin@jobportal.com
+  Password: Admin@123
+
+Student:
+  Email: student@example.com
+  Password: Student@123
+
+Employer:
+  Email: employer@company.com
+  Password: Employer@123
+
+## PROJECT STRUCTURE
+
+MSP2-FSD/
+├── pom.xml                    # Maven configuration
+├── README.md                  # Project overview
+├── REQUIREMENTS.md            # Detailed setup guide
+├── requirements.txt           # This file
+├── .gitignore                 # Git ignore rules
+│
+├── Docs/                      # Documentation
+│   ├── README.md
+│   ├── MASTER_PROMPT.md
+│   └── (8 PRD files)
+│
+└── src/
+    ├── main/
+    │   ├── java/com/jobportal/
+    │   │   ├── JobPortalApplication.java
+    │   │   ├── config/
+    │   │   ├── controller/
+    │   │   ├── dto/
+    │   │   ├── entity/
+    │   │   ├── enums/
+    │   │   ├── exception/
+    │   │   ├── mapper/
+    │   │   ├── repository/
+    │   │   ├── security/
+    │   │   ├── service/
+    │   │   └── util/
+    │   │
+    │   └── resources/
+    │       ├── application.properties
+    │       ├── application-dev.properties
+    │       ├── application-prod.properties
+    │       ├── data.sql
+    │       ├── static/
+    │       └── templates/
+    │
+    └── test/
+        └── java/com/jobportal/
+
+## TROUBLESHOOTING
+
+Port 8080 in use:
+  Windows: netstat -ano | findstr :8080 && taskkill /PID <PID> /F
+  Linux/Mac: lsof -ti:8080 | xargs kill -9
+  Or change port: server.port=8081 in application.properties
+
+Maven not finding dependencies:
+  rm -rf ~/.m2/repository
+  mvn clean install -U
+
+H2 connection failed:
+  Ensure spring.h2.console.enabled=true in application.properties
+
+Compilation errors:
+  Right-click project -> Maven -> Update Project
+  Or: mvn clean rebuild
+
+## USEFUL LINKS
+
+Spring Boot: https://spring.io/projects/spring-boot
+Spring Security: https://spring.io/projects/spring-security
+Spring Data JPA: https://spring.io/projects/spring-data-jpa
+Thymeleaf: https://www.thymeleaf.org/
+Bootstrap: https://getbootstrap.com/
+Maven: https://maven.apache.org/
+H2 Database: https://www.h2database.com/
+MySQL: https://dev.mysql.com/doc/
+
+## NOTES FOR GITHUB
+
+1. All Maven dependencies are defined in pom.xml
+2. No Python dependencies required
+3. H2 is embedded - no external database setup needed for development
+4. This requirements.txt lists system and software prerequisites
+5. For Windows users: Use PowerShell or Command Prompt
+6. For Mac/Linux: Use Terminal
+
+## LAST UPDATED
+
+April 18, 2026
+Version: 1.0.0

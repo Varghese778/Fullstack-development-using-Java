@@ -1,0 +1,28 @@
+package com.jobportal.enums;
+
+/**
+ * Audit log action types for security tracking.
+ */
+public enum AuditActionEnum {
+    LOGIN,
+    LOGOUT,
+    LOGIN_FAILED,
+    PASSWORD_CHANGE,
+    PASSWORD_RESET,
+    PERMISSION_CHANGE,
+    ACCOUNT_LOCKED,
+    ACCOUNT_UNLOCKED,
+    ACCOUNT_CREATED,
+    ACCOUNT_DELETED,
+    PROFILE_UPDATED,
+    JOB_CREATED,
+    JOB_UPDATED,
+    JOB_DELETED,
+    APPLICATION_SUBMITTED,
+    APPLICATION_STATUS_CHANGED,
+    RESUME_UPLOADED,
+    RESUME_DOWNLOADED,
+    EMPLOYER_VERIFIED,
+    EMPLOYER_REJECTED,
+    ADMIN_ACTION
+}

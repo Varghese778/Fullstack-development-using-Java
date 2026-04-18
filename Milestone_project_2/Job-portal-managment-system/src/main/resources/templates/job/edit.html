@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"><head th:replace="~{fragments/head :: head('Edit Job')}"></head>
+<body class="d-flex flex-column min-vh-100"><nav th:replace="~{fragments/navbar :: navbar}"></nav>
+<main class="container mt-5 pt-4 flex-grow-1">
+    <h2 class="fw-bold mb-4"><i class="bi bi-pencil-square me-2"></i>Edit Job</h2>
+    <div class="card glass-card p-4">
+        <form th:action="@{/jobs/{id}/edit(id=${job.jobId})}" method="post">
+            <div class="row g-3">
+                <div class="col-md-8"><label class="form-label fw-bold">Job Title</label><input type="text" name="jobTitle" class="form-control" th:value="${job.jobTitle}" required/></div>
+                <div class="col-md-4"><label class="form-label">Department</label><input type="text" name="department" class="form-control" th:value="${job.department}"/></div>
+                <div class="col-12"><label class="form-label fw-bold">Description</label><textarea name="jobDescription" class="form-control" rows="8" th:text="${job.jobDescription}" required></textarea></div>
+                <div class="col-md-3"><label class="form-label">Min Salary</label><input type="number" name="salaryMin" class="form-control" th:value="${job.salaryMin}"/></div>
+                <div class="col-md-3"><label class="form-label">Max Salary</label><input type="number" name="salaryMax" class="form-control" th:value="${job.salaryMax}"/></div>
+                <div class="col-md-3"><label class="form-label">Positions</label><input type="number" name="numberOfPositions" class="form-control" th:value="${job.numberOfPositions}"/></div>
+                <div class="col-md-3"><label class="form-label">Deadline</label><input type="date" name="applicationDeadline" class="form-control" th:value="${job.applicationDeadline}"/></div>
+                <div class="col-12"><label class="form-label">Skills</label><input type="text" name="skillsRequired" class="form-control" th:value="${job.skillsRequired}"/></div>
+                <div class="col-12"><label class="form-label">Benefits</label><textarea name="benefits" class="form-control" rows="3" th:text="${job.benefits}"></textarea></div>
+            </div>
+            <div class="mt-4"><button type="submit" class="btn btn-primary"><i class="bi bi-check me-1"></i>Save Changes</button> <a th:href="@{/employer/my-jobs}" class="btn btn-outline-secondary ms-2">Cancel</a></div>
+        </form>
+    </div>
+</main>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body></html>

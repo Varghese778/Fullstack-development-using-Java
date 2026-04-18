@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"><head th:replace="~{fragments/head :: head('Post a Job')}"></head>
+<body class="d-flex flex-column min-vh-100"><nav th:replace="~{fragments/navbar :: navbar}"></nav>
+<main class="container mt-5 pt-4 flex-grow-1">
+    <h2 class="fw-bold mb-4"><i class="bi bi-plus-circle me-2"></i>Post a New Job</h2>
+    <div class="card glass-card p-4">
+        <form th:action="@{/jobs/post}" method="post" th:object="${jobRequest}">
+            <div class="row g-3">
+                <div class="col-md-8"><label class="form-label fw-bold">Job Title *</label><input type="text" th:field="*{jobTitle}" class="form-control" required minlength="3"/></div>
+                <div class="col-md-4"><label class="form-label fw-bold">Department</label><input type="text" th:field="*{department}" class="form-control"/></div>
+                <div class="col-12"><label class="form-label fw-bold">Job Description *</label><textarea th:field="*{jobDescription}" class="form-control" rows="8" minlength="50" required></textarea></div>
+                <div class="col-md-4"><label class="form-label">Category</label><select th:field="*{category}" class="form-select"><option value="">Select</option><option value="IT">IT</option><option value="FINANCE">Finance</option><option value="HEALTHCARE">Healthcare</option><option value="EDUCATION">Education</option><option value="MARKETING">Marketing</option><option value="OTHER">Other</option></select></div>
+                <div class="col-md-4"><label class="form-label">Employment Type</label><select th:field="*{employmentType}" class="form-select"><option value="FULL_TIME">Full Time</option><option value="PART_TIME">Part Time</option><option value="CONTRACT">Contract</option><option value="INTERNSHIP">Internship</option><option value="FREELANCE">Freelance</option></select></div>
+                <div class="col-md-4"><label class="form-label">Experience Level</label><select th:field="*{experienceLevel}" class="form-select"><option value="FRESHER">Fresher</option><option value="ONE_TO_TWO_YEARS">1-2 Years</option><option value="THREE_TO_FIVE_YEARS">3-5 Years</option><option value="FIVE_PLUS_YEARS">5+ Years</option><option value="TEN_PLUS_YEARS">10+ Years</option></select></div>
+                <div class="col-md-3"><label class="form-label">Min Salary (₹)</label><input type="number" th:field="*{salaryMin}" class="form-control"/></div>
+                <div class="col-md-3"><label class="form-label">Max Salary (₹)</label><input type="number" th:field="*{salaryMax}" class="form-control"/></div>
+                <div class="col-md-3"><label class="form-label">Positions</label><input type="number" th:field="*{numberOfPositions}" class="form-control" value="1" min="1"/></div>
+                <div class="col-md-3"><label class="form-label">Deadline</label><input type="date" th:field="*{applicationDeadline}" class="form-control"/></div>
+                <div class="col-md-4"><label class="form-label">Remote Policy</label><select th:field="*{remotePolicy}" class="form-select"><option value="ON_SITE">On-site</option><option value="REMOTE">Remote</option><option value="HYBRID">Hybrid</option></select></div>
+                <div class="col-md-8"><label class="form-label">Skills Required</label><input type="text" th:field="*{skillsRequired}" class="form-control" placeholder="Java, Spring Boot, React (comma separated)"/></div>
+                <div class="col-12"><label class="form-label">Benefits</label><textarea th:field="*{benefits}" class="form-control" rows="3" placeholder="Health insurance, Flexible hours, etc."></textarea></div>
+            </div>
+            <div class="mt-4"><button type="submit" class="btn btn-success px-4 py-2"><i class="bi bi-check-circle me-1"></i>Post Job (Draft)</button> <a th:href="@{/employer/my-jobs}" class="btn btn-outline-secondary ms-2">Cancel</a></div>
+        </form>
+    </div>
+</main>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body></html>

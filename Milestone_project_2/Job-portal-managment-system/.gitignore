@@ -1,0 +1,170 @@
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+.flattened-pom.xml
+
+# IDE - Eclipse
+.classpath
+.project
+.settings/
+.metadata/
+*.launch
+.apt_generated
+.factorypath
+bin/
+
+# IDE - IntelliJ
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+.IntelliJIdea*/
+*.hprof
+*.jfr
+
+# IDE - VS Code
+.vscode/
+*.code-workspace
+/Docs
+
+# IDE - NetBeans
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# IDE - Sublime
+*.sublime-project
+*.sublime-workspace
+
+# IDE - Visual Studio
+.vs/
+.vscode/
+*.vcxproj
+*.vcxproj.filters
+
+# OS
+.DS_Store
+Thumbs.db
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Desktop.ini
+
+# Compiled class files
+*.class
+
+# Log files
+*.log
+logs/
+
+# Spring Boot
+application-prod.properties
+application-local.properties
+
+# Database
+*.h2.db
+*.h2.mv.db
+*.db
+*.sqlite
+
+# Upload directories
+uploads/
+uploads/resumes/
+uploads/logos/
+uploads/profile-pictures/
+
+# Local development
+.env
+.env.local
+.env.*.local
+
+# Node (if using npm for frontend)
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# Temp files
+temp/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~
+
+# Maven wrapper
+mvnw
+mvnw.cmd
+.mvn/wrapper/maven-wrapper.properties
+
+# Gradle (if using Gradle)
+.gradle/
+gradle/
+build/
+gradlew
+gradlew.bat
+
+# SonarQube
+.sonarqube/
+.sonar/
+
+# JaCoCo coverage
+jacoco.exec
+*.exec
+coverage.xml
+
+# Checkstyle
+checkstyle-result.xml
+
+# Documentation
+site/
+
+# Backup files
+*.backup
+*.orig
+*.rej
+
+# Archives
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# System files
+.recommenders/
+.cache/
+.history
+
+# SSL Certificates (development only)
+*.keystore
+*.p12
+*.pfx
+
+# Docker
+.docker/
+docker-compose.override.yml
+
+# CI/CD
+.github/workflows/secrets
+.gitlab-ci.yml.backup
+
+# Misc
+.bash_history
+.zsh_history
+*.pid
+.venv/
+venv/
+ENV/
+env/

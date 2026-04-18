@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/head :: head('My Profile')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments/navbar :: navbar}"></nav>
+<main class="container mt-5 pt-4 flex-grow-1">
+    <div th:if="${message}" class="alert alert-success alert-dismissible fade show"><span th:text="${message}"></span><button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold"><i class="bi bi-person-circle me-2"></i>My Profile</h2>
+        <a th:href="@{/profile/edit}" class="btn btn-primary"><i class="bi bi-pencil me-1"></i>Edit Profile</a>
+    </div>
+    <!-- Profile Card -->
+    <div class="card glass-card p-4 mb-4">
+        <div class="row">
+            <div class="col-md-8">
+                <h4 class="fw-bold" th:text="${user.fullName}">Name</h4>
+                <p class="text-muted mb-1"><i class="bi bi-envelope me-1"></i><span th:text="${user.email}"></span></p>
+                <p th:if="${user.phoneNumber}" class="text-muted mb-1"><i class="bi bi-phone me-1"></i><span th:text="${user.phoneNumber}"></span></p>
+                <p th:if="${user.location}" class="text-muted mb-1"><i class="bi bi-geo-alt me-1"></i><span th:text="${user.location}"></span></p>
+                <p th:if="${user.bio}" class="mt-2" th:text="${user.bio}"></p>
+            </div>
+            <div class="col-md-4 text-end">
+                <div class="mb-2"><span class="badge bg-primary fs-6" th:text="${user.availabilityStatus}">Available</span></div>
+                <div class="mb-2">
+                    <span class="fw-medium">Profile: </span><strong th:text="${user.profileCompleteness + '%'}">0%</strong>
+                </div>
+                <div class="progress" style="height:8px"><div class="progress-bar" th:style="'width:'+${user.profileCompleteness}+'%'"></div></div>
+            </div>
+        </div>
+    </div>
+    <!-- Education -->
+    <div class="card glass-card p-4 mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold mb-0"><i class="bi bi-mortarboard me-2"></i>Education</h5>
+            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#addEdu"><i class="bi bi-plus"></i> Add</button>
+        </div>
+        <div id="addEdu" class="collapse mb-3">
+            <form th:action="@{/profile/education/add}" method="post" class="card card-body bg-light">
+                <div class="row g-2">
+                    <div class="col-md-6"><input type="text" name="degree" class="form-control" placeholder="Degree *" required/></div>
+                    <div class="col-md-6"><input type="text" name="institution" class="form-control" placeholder="Institution *" required/></div>
+                    <div class="col-md-6"><input type="text" name="fieldOfStudy" class="form-control" placeholder="Field of Study"/></div>
+                    <div class="col-md-6"><input type="number" name="graduationYear" class="form-control" placeholder="Graduation Year"/></div>
+                    <div class="col-12"><button type="submit" class="btn btn-primary btn-sm">Save</button></div>
+                </div>
+            </form>
+        </div>
+        <div th:each="edu : ${educations}" class="d-flex justify-content-between align-items-center border-bottom py-2">
+            <div>
+                <strong th:text="${edu.degree}"></strong> — <span th:text="${edu.institution}"></span>
+                <small th:if="${edu.graduationYear}" class="text-muted ms-2" th:text="'(' + ${edu.graduationYear} + ')'"></small>
+            </div>
+            <form th:action="@{/profile/education/{id}/delete(id=${edu.educationId})}" method="post">
+                <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+            </form>
+        </div>
+        <p th:if="${#lists.isEmpty(educations)}" class="text-muted mb-0">No education added yet.</p>
+    </div>
+    <!-- Experience -->
+    <div class="card glass-card p-4 mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold mb-0"><i class="bi bi-briefcase me-2"></i>Experience</h5>
+            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#addExp"><i class="bi bi-plus"></i> Add</button>
+        </div>
+        <div id="addExp" class="collapse mb-3">
+            <form th:action="@{/profile/experience/add}" method="post" class="card card-body bg-light">
+                <div class="row g-2">
+                    <div class="col-md-6"><input type="text" name="jobTitle" class="form-control" placeholder="Job Title *" required/></div>
+                    <div class="col-md-6"><input type="text" name="company" class="form-control" placeholder="Company *" required/></div>
+                    <div class="col-md-6"><input type="date" name="startDate" class="form-control"/></div>
+                    <div class="col-md-6"><input type="date" name="endDate" class="form-control"/></div>
+                    <div class="col-12"><textarea name="description" class="form-control" rows="2" placeholder="Description"></textarea></div>
+                    <div class="col-12"><button type="submit" class="btn btn-primary btn-sm">Save</button></div>
+                </div>
+            </form>
+        </div>
+        <div th:each="exp : ${experiences}" class="d-flex justify-content-between align-items-center border-bottom py-2">
+            <div>
+                <strong th:text="${exp.jobTitle}"></strong> at <span th:text="${exp.company}"></span>
+            </div>
+            <form th:action="@{/profile/experience/{id}/delete(id=${exp.experienceId})}" method="post">
+                <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+            </form>
+        </div>
+        <p th:if="${#lists.isEmpty(experiences)}" class="text-muted mb-0">No experience added yet.</p>
+    </div>
+    <!-- Skills -->
+    <div class="card glass-card p-4 mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold mb-0"><i class="bi bi-tools me-2"></i>Skills</h5>
+            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#addSkill"><i class="bi bi-plus"></i> Add</button>
+        </div>
+        <div id="addSkill" class="collapse mb-3">
+            <form th:action="@{/profile/skills/add}" method="post" class="card card-body bg-light">
+                <div class="row g-2">
+                    <div class="col-md-8"><input type="text" name="skillName" class="form-control" placeholder="Skill Name *" required/></div>
+                    <div class="col-md-4">
+                        <select name="proficiencyLevel" class="form-select">
+                            <option value="BEGINNER">Beginner</option><option value="INTERMEDIATE">Intermediate</option>
+                            <option value="ADVANCED">Advanced</option><option value="EXPERT">Expert</option>
+                        </select>
+                    </div>
+                    <div class="col-12"><button type="submit" class="btn btn-primary btn-sm">Save</button></div>
+                </div>
+            </form>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+            <span th:each="skill : ${skills}" class="badge bg-primary-subtle text-primary fs-6 d-inline-flex align-items-center gap-1">
+                <span th:text="${skill.skillName}"></span>
+                <form th:action="@{/profile/skills/{id}/delete(id=${skill.skillId})}" method="post" class="d-inline">
+                    <button class="btn btn-sm p-0 text-danger border-0 bg-transparent"><i class="bi bi-x"></i></button>
+                </form>
+            </span>
+        </div>
+        <p th:if="${#lists.isEmpty(skills)}" class="text-muted mb-0">No skills added yet.</p>
+    </div>
+</main>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

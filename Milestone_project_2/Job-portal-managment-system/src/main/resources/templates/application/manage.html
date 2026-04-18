@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"><head th:replace="~{fragments/head :: head('Manage Applications')}"></head>
+<body class="d-flex flex-column min-vh-100"><nav th:replace="~{fragments/navbar :: navbar}"></nav>
+<main class="container mt-5 pt-4 flex-grow-1">
+    <div th:if="${message}" class="alert alert-success alert-dismissible fade show"><span th:text="${message}"></span><button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+    <h2 class="fw-bold mb-4"><i class="bi bi-people me-2"></i>Manage Applications</h2>
+    <!-- Status filter -->
+    <div class="mb-4 d-flex flex-wrap gap-2">
+        <a th:href="@{/employer/applications}" class="btn btn-sm" th:classappend="${currentStatus == null} ? 'btn-primary' : 'btn-outline-primary'">All</a>
+        <a th:each="s : ${ {'SUBMITTED','UNDER_REVIEW','SHORTLISTED','INTERVIEWED','REJECTED','HIRED'} }" th:href="@{/employer/applications(status=${s})}" class="btn btn-sm" th:classappend="${currentStatus == s} ? 'btn-primary' : 'btn-outline-primary'" th:text="${s}"></a>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-dark"><tr><th>Candidate</th><th>Job</th><th>Status</th><th>Applied</th><th>Actions</th></tr></thead>
+            <tbody>
+                <tr th:each="app : ${applications.content}">
+                    <td><strong th:text="${app.user.fullName}"></strong><br/><small class="text-muted" th:text="${app.user.email}"></small></td>
+                    <td th:text="${app.job.jobTitle}"></td>
+                    <td><span class="badge" th:classappend="${app.status.name() == 'SHORTLISTED' ? 'bg-warning text-dark' : app.status.name() == 'REJECTED' ? 'bg-danger' : app.status.name() == 'HIRED' ? 'bg-success' : 'bg-info'}" th:text="${app.status}"></span></td>
+                    <td th:text="${#temporals.format(app.applicationDate, 'dd MMM yyyy')}"></td>
+                    <td class="d-flex gap-1">
+                        <a th:href="@{/applications/{id}(id=${app.applicationId})}" class="btn btn-sm btn-outline-primary"><i class="bi bi-eye"></i></a>
+                        <form th:if="${app.status.name() == 'SUBMITTED' or app.status.name() == 'UNDER_REVIEW'}" th:action="@{/employer/applications/{id}/shortlist(id=${app.applicationId})}" method="post"><button class="btn btn-sm btn-outline-success" title="Shortlist"><i class="bi bi-star"></i></button></form>
+                        <form th:if="${app.status.name() != 'REJECTED' and app.status.name() != 'HIRED' and app.status.name() != 'WITHDRAWN'}" th:action="@{/employer/applications/{id}/reject(id=${app.applicationId})}" method="post"><input type="hidden" name="reason" value="NOT_SUITABLE"/><button class="btn btn-sm btn-outline-danger" title="Reject"><i class="bi bi-x-circle"></i></button></form>
+                        <a th:if="${app.status.name() == 'SHORTLISTED'}" th:href="@{/employer/applications/{id}/schedule-interview(id=${app.applicationId})}" class="btn btn-sm btn-outline-info" title="Schedule Interview"><i class="bi bi-camera-video"></i></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <p th:if="${applications.content.isEmpty()}" class="text-center text-muted py-5">No applications found.</p>
+</main>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body></html>

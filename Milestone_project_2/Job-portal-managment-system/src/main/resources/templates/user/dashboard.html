@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/head :: head('Dashboard')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments/navbar :: navbar}"></nav>
+<main class="container mt-5 pt-4 flex-grow-1">
+    <div th:if="${message}" class="alert alert-success alert-dismissible fade show"><span th:text="${message}"></span><button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Welcome, <span th:text="${user.firstName}">User</span>! 👋</h2>
+            <p class="text-muted mb-0">Here's your application overview</p>
+        </div>
+        <a th:href="@{/profile}" class="btn btn-outline-primary"><i class="bi bi-person me-1"></i>View Profile</a>
+    </div>
+    <!-- Profile Completion -->
+    <div class="card glass-card mb-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between mb-2">
+                <span class="fw-medium">Profile Completion</span>
+                <span class="fw-bold" th:text="${user.profileCompleteness + '%'}">0%</span>
+            </div>
+            <div class="progress" style="height:10px">
+                <div class="progress-bar bg-gradient" role="progressbar" th:style="'width:' + ${user.profileCompleteness} + '%'" th:attr="aria-valuenow=${user.profileCompleteness}"></div>
+            </div>
+        </div>
+    </div>
+    <!-- Stats Cards -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-4 col-lg-2">
+            <div class="card glass-card stat-card text-center p-3">
+                <i class="bi bi-send-fill display-6 text-primary"></i>
+                <h3 class="fw-bold mt-2 mb-0" th:text="${stats.totalApplications}">0</h3>
+                <small class="text-muted">Applied</small>
+            </div>
+        </div>
+        <div class="col-md-4 col-lg-2">
+            <div class="card glass-card stat-card text-center p-3">
+                <i class="bi bi-eye-fill display-6 text-info"></i>
+                <h3 class="fw-bold mt-2 mb-0" th:text="${stats.underReview}">0</h3>
+                <small class="text-muted">Under Review</small>
+            </div>
+        </div>
+        <div class="col-md-4 col-lg-2">
+            <div class="card glass-card stat-card text-center p-3">
+                <i class="bi bi-star-fill display-6 text-warning"></i>
+                <h3 class="fw-bold mt-2 mb-0" th:text="${stats.shortlisted}">0</h3>
+                <small class="text-muted">Shortlisted</small>
+            </div>
+        </div>
+        <div class="col-md-4 col-lg-2">
+            <div class="card glass-card stat-card text-center p-3">
+                <i class="bi bi-camera-video-fill display-6 text-success"></i>
+                <h3 class="fw-bold mt-2 mb-0" th:text="${stats.interviewsScheduled}">0</h3>
+                <small class="text-muted">Interviews</small>
+            </div>
+        </div>
+        <div class="col-md-4 col-lg-2">
+            <div class="card glass-card stat-card text-center p-3">
+                <i class="bi bi-trophy-fill display-6 text-success"></i>
+                <h3 class="fw-bold mt-2 mb-0" th:text="${stats.hired}">0</h3>
+                <small class="text-muted">Hired</small>
+            </div>
+        </div>
+        <div class="col-md-4 col-lg-2">
+            <div class="card glass-card stat-card text-center p-3">
+                <i class="bi bi-x-circle-fill display-6 text-danger"></i>
+                <h3 class="fw-bold mt-2 mb-0" th:text="${stats.rejected}">0</h3>
+                <small class="text-muted">Rejected</small>
+            </div>
+        </div>
+    </div>
+    <!-- Quick Actions -->
+    <div class="row g-3">
+        <div class="col-md-4"><a th:href="@{/jobs}" class="btn btn-primary w-100 py-3"><i class="bi bi-search me-2"></i>Browse Jobs</a></div>
+        <div class="col-md-4"><a th:href="@{/resumes}" class="btn btn-outline-secondary w-100 py-3"><i class="bi bi-file-earmark-arrow-up me-2"></i>Upload Resume</a></div>
+        <div class="col-md-4"><a th:href="@{/profile/edit}" class="btn btn-outline-secondary w-100 py-3"><i class="bi bi-pencil-square me-2"></i>Complete Profile</a></div>
+    </div>
+</main>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>

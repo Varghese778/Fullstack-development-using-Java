@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"><head th:replace="~{fragments/head :: head('My Resumes')}"></head>
+<body class="d-flex flex-column min-vh-100"><nav th:replace="~{fragments/navbar :: navbar}"></nav>
+<main class="container mt-5 pt-4 flex-grow-1">
+    <div th:if="${message}" class="alert alert-success alert-dismissible fade show"><span th:text="${message}"></span><button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show"><span th:text="${error}"></span><button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+    <h2 class="fw-bold mb-4"><i class="bi bi-file-earmark-person me-2"></i>My Resumes</h2>
+    <!-- Upload -->
+    <div class="card glass-card p-4 mb-4">
+        <h5 class="fw-bold mb-3">Upload Resume</h5>
+        <form th:action="@{/resumes/upload}" method="post" enctype="multipart/form-data">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-6"><input type="file" name="file" class="form-control" accept=".pdf,.doc,.docx" required/></div>
+                <div class="col-md-3">
+                    <div class="form-check"><input type="checkbox" name="isPrimary" value="true" class="form-check-input" id="priChk"/><label for="priChk" class="form-check-label">Set as primary</label></div>
+                </div>
+                <div class="col-md-3"><button type="submit" class="btn btn-primary w-100"><i class="bi bi-upload me-1"></i>Upload</button></div>
+            </div>
+            <small class="text-muted">Max 5MB · PDF, DOC, DOCX</small>
+        </form>
+    </div>
+    <!-- Resume List -->
+    <div class="card glass-card p-4">
+        <div th:each="resume : ${resumes}" class="d-flex justify-content-between align-items-center border-bottom py-3">
+            <div>
+                <h6 class="fw-bold mb-0">
+                    <i class="bi bi-file-earmark-pdf text-danger me-1"></i><span th:text="${resume.originalFileName}">resume.pdf</span>
+                    <span th:if="${resume.isPrimary}" class="badge bg-success ms-2">Primary</span>
+                </h6>
+                <small class="text-muted">Size: <span th:text="${#numbers.formatDecimal(resume.fileSize / 1024.0, 0, 1)}"></span> KB · Downloads: <span th:text="${resume.downloadCount}">0</span> · Used in: <span th:text="${resume.applicationCount}">0</span> applications</small>
+            </div>
+            <div class="d-flex gap-2">
+                <a th:href="@{/resumes/{id}/download(id=${resume.resumeId})}" class="btn btn-sm btn-outline-primary"><i class="bi bi-download"></i></a>
+                <form th:if="${!resume.isPrimary}" th:action="@{/resumes/{id}/set-primary(id=${resume.resumeId})}" method="post" class="d-inline">
+                    <button class="btn btn-sm btn-outline-success" title="Set Primary"><i class="bi bi-star"></i></button>
+                </form>
+                <form th:action="@{/resumes/{id}/delete(id=${resume.resumeId})}" method="post" class="d-inline">
+                    <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                </form>
+            </div>
+        </div>
+        <p th:if="${#lists.isEmpty(resumes)}" class="text-muted text-center py-4 mb-0">No resumes uploaded yet. Upload your first resume above!</p>
+    </div>
+</main>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body></html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"><head th:replace="~{fragments/head :: head('Application Detail')}"></head>
+<body class="d-flex flex-column min-vh-100"><nav th:replace="~{fragments/navbar :: navbar}"></nav>
+<main class="container mt-5 pt-4 flex-grow-1">
+    <h2 class="fw-bold mb-4"><i class="bi bi-file-earmark-text me-2"></i>Application Detail</h2>
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card glass-card p-4 mb-4">
+                <h5 class="fw-bold" th:text="${application.job.jobTitle}">Job Title</h5>
+                <p class="text-muted"><i class="bi bi-building me-1"></i><span th:text="${application.job.companyName}"></span></p>
+                <div class="mb-3"><span class="badge fs-6" th:classappend="${application.status.name() == 'SHORTLISTED' ? 'bg-warning text-dark' : application.status.name() == 'REJECTED' ? 'bg-danger' : application.status.name() == 'HIRED' ? 'bg-success' : 'bg-primary'}" th:text="${application.status}"></span></div>
+                <div th:if="${application.coverLetter}"><h6 class="fw-bold">Cover Letter</h6><p th:text="${application.coverLetter}"></p></div>
+                <div th:if="${application.notes}"><h6 class="fw-bold">Notes</h6><p th:text="${application.notes}"></p></div>
+            </div>
+            <!-- Status Timeline -->
+            <div class="card glass-card p-4">
+                <h5 class="fw-bold mb-3"><i class="bi bi-clock-history me-2"></i>Status History</h5>
+                <div th:each="h : ${history}" class="d-flex mb-3">
+                    <div class="me-3"><div class="rounded-circle bg-primary d-flex align-items-center justify-content-center" style="width:36px;height:36px"><i class="bi bi-arrow-right text-white"></i></div></div>
+                    <div>
+                        <strong th:text="${h.newStatus}"></strong>
+                        <br/><small class="text-muted" th:text="${#temporals.format(h.changedAt, 'dd MMM yyyy HH:mm')}"></small>
+                        <span th:if="${h.changeReason}" class="ms-2 text-muted" th:text="'— ' + ${h.changeReason}"></span>
+                    </div>
+                </div>
+                <p th:if="${#lists.isEmpty(history)}" class="text-muted">No status updates yet.</p>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card glass-card p-4">
+                <h6 class="fw-bold">Candidate</h6>
+                <p><i class="bi bi-person me-1"></i><span th:text="${application.user.fullName}"></span></p>
+                <p><i class="bi bi-envelope me-1"></i><span th:text="${application.user.email}"></span></p>
+                <p th:if="${application.resume}"><i class="bi bi-file-earmark me-1"></i><span th:text="${application.resume.resumeName}"></span></p>
+                <p><i class="bi bi-calendar me-1"></i>Applied: <span th:text="${#temporals.format(application.applicationDate, 'dd MMM yyyy')}"></span></p>
+            </div>
+        </div>
+    </div>
+</main>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body></html>

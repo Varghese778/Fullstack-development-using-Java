@@ -1,0 +1,20 @@
+package com.jobportal.enums;
+
+/**
+ * Notification event types.
+ */
+public enum NotificationTypeEnum {
+    APPLICATION_STATUS,
+    JOB_RECOMMENDATION,
+    INTERVIEW_SCHEDULED,
+    INTERVIEW_REMINDER,
+    PROFILE_COMPLETION,
+    ACCOUNT_SECURITY,
+    SYSTEM_UPDATE,
+    REGISTRATION,
+    PASSWORD_RESET,
+    NEW_APPLICATION,
+    JOB_EXPIRY,
+    VERIFICATION_STATUS,
+    TEAM_UPDATE
+}
