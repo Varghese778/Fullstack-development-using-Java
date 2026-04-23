@@ -1,0 +1,70 @@
+pipeline {
+    agent any
+    
+    // Task 11.5: Use parameters for environment selection
+    parameters {
+        choice(name: 'ENV', choices: ['DEV', 'QA', 'PROD'], description: 'Select Environment')
+    }
+
+    stages {
+        // Task 11.3: Checkout stage
+        stage('Checkout') {
+            steps {
+                checkout scm
+                echo "Code checked out successfully from GitHub."
+            }
+        }
+        
+        // Task 11.3: Build stage
+        stage('Build') {
+            steps {
+                echo "Building the application for ${params.ENV} environment..."
+            }
+        }
+        
+        // Task 11.3 & 11.4: Test stage
+        stage('Test') {
+            steps {
+                echo "Running unit tests..."
+                // Note: The syllabus uses 'sh' for Linux/Mac. If you are on Windows, use 'bat' instead.
+                sh 'echo "Tests passed successfully!"' 
+            }
+        }
+
+        // Task 11.4: Archive artifacts
+        stage('Package') {
+            steps {
+                sh 'mkdir -p output'
+                sh 'echo "Build successful" > output/app.txt'
+                archiveArtifacts artifacts: 'output/*'
+            }
+        }
+        
+        // Task 11.5: Manual approval step for production
+        stage('Approval') {
+            when {
+                expression { params.ENV == 'PROD' }
+            }
+            steps {
+                input message: 'Approve Production Deployment?'
+            }
+        }
+
+        // Task 11.5: Deploy application
+        stage('Deploy') {
+            steps {
+                echo "Deploying application to ${params.ENV} server!"
+            }
+        }
+    }
+
+    // Task 11.5: Send email/Slack notifications (Mocked via console output)
+    post {
+        success {
+            echo "Build Successful! Sending Slack/Email notification..."
+        }
+        failure {
+            echo "Build Failed! Sending alert to Dev Team..."
+        }
+    }
+}
