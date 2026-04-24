@@ -1,0 +1,69 @@
+# Define the stages of our pipeline
+stages:
+  - build
+  - test
+  - package
+  - deploy_staging
+  - deploy_production
+
+# Session 60: Use CI variables
+variables:
+  APP_ENV: "demo-environment"
+
+# Session 58: Build Stage
+build_job:
+  stage: build
+  script:
+    - echo "Building the application..."
+    - mkdir -p build_output
+    - echo "Build successful!" > build_output/info.txt
+  artifacts:
+    paths:
+      - build_output/
+
+# Session 59: Automated Testing & JUnit Reports
+test_job:
+  stage: test
+  script:
+    - echo "Running unit tests..."
+    - echo "All tests passed successfully!"
+    # To fail the build on purpose, you would uncomment the next line:
+    # - exit 1 
+    - mkdir -p reports
+    # Generating a dummy JUnit XML report to fulfill the syllabus requirement
+    - echo '<?xml version="1.0" encoding="UTF-8"?><testsuites><testsuite name="dummy" tests="1"><testcase name="success"/></testsuite></testsuites>' > reports/junit.xml
+  artifacts:
+    when: always
+    reports:
+      junit: reports/junit.xml
+
+# Session 59: Package & Store Artifacts
+package_job:
+  stage: package
+  script:
+    - echo "Packaging the application..."
+    - mkdir -p artifacts
+    - cp build_output/info.txt artifacts/
+    - echo "Packaged successfully for $APP_ENV" > artifacts/app_package.txt
+  artifacts:
+    paths:
+      - artifacts/
+
+# Session 60: Deploy to Staging Environment
+staging_deploy:
+  stage: deploy_staging
+  environment:
+    name: staging
+  script:
+    - echo "Deploying application to the STAGING server..."
+    - echo "Staging deployment complete."
+
+# Session 60: Deploy to Production (With Manual Approval)
+production_deploy:
+  stage: deploy_production
+  environment:
+    name: production
+  script:
+    - echo "Deploying application to the PRODUCTION server..."
+    - echo "Production deployment complete! System is live."
+  when: manual # This enforces the manual approval step!
