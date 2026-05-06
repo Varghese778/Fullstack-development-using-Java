@@ -384,17 +384,3 @@ npm install --force
 - Ensure discovery service (Eureka) is running first
 - Check service registration status in Eureka dashboard
 
----
-
-## 📞 Support
-
-For individual project issues:
-- Check the project's specific README.md
-- Review the HELP.md files in week sessions
-- Consult the Docs/ folders in milestone projects
-
----
-
-**Happy Learning! 🚀**
-
-*Last Updated: April 2026*
