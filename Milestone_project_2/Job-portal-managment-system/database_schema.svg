@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="100%" height="100%">
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="3" dy="4" stdDeviation="3" flood-color="#000000" flood-opacity="0.1"/>
+    </filter>
+    <marker id="crowfoot" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="10" markerHeight="10" orient="auto">
+      <path d="M 10 5 L 0 0 M 10 5 L 0 10 M 5 0 L 5 10" stroke="#2d3436" stroke-width="1.5" fill="none" />
+    </marker>
+    <marker id="one" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="10" markerHeight="10" orient="auto">
+      <path d="M 5 0 L 5 10 M 8 0 L 8 10" stroke="#2d3436" stroke-width="1.5" fill="none" />
+    </marker>
+  </defs>
+
+  <rect width="800" height="600" fill="#fafafa" rx="10" />
+  <text x="400" y="40" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#2d3436" text-anchor="middle">Database Schema (Entity-Relationship)</text>
+
+  <!-- USERS Table -->
+  <g transform="translate(80, 100)" filter="url(#shadow)">
+    <rect width="220" height="180" rx="5" fill="#ffffff" stroke="#0984e3" stroke-width="2" />
+    <rect width="220" height="40" rx="5" fill="#0984e3" />
+    <text x="110" y="25" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="middle">USERS</text>
+    
+    <text x="15" y="65" font-family="Arial, sans-serif" font-size="14" fill="#2d3436">
+      <tspan font-weight="bold" fill="#d63031">PK  id (BIGINT)</tspan>
+      <tspan x="15" dy="25">username (VARCHAR)</tspan>
+      <tspan x="15" dy="25">email (VARCHAR)</tspan>
+      <tspan x="15" dy="25">password (VARCHAR)</tspan>
+      <tspan x="15" dy="25">role (ENUM)</tspan>
+    </text>
+  </g>
+
+  <!-- RESUMES Table -->
+  <g transform="translate(80, 380)" filter="url(#shadow)">
+    <rect width="220" height="180" rx="5" fill="#ffffff" stroke="#00b894" stroke-width="2" />
+    <rect width="220" height="40" rx="5" fill="#00b894" />
+    <text x="110" y="25" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="middle">RESUMES</text>
+    
+    <text x="15" y="65" font-family="Arial, sans-serif" font-size="14" fill="#2d3436">
+      <tspan font-weight="bold" fill="#d63031">PK  id (BIGINT)</tspan>
+      <tspan x="15" dy="25" font-weight="bold" fill="#0984e3">FK  user\_id (BIGINT)</tspan>
+      <tspan x="15" dy="25">file\_path (VARCHAR)</tspan>
+      <tspan x="15" dy="25">parsed\_profile\_json (TEXT)</tspan>
+      <tspan x="15" dy="25">is\_ai\_parsed (BOOLEAN)</tspan>
+    </text>
+  </g>
+
+  <!-- JOBS Table -->
+  <g transform="translate(500, 100)" filter="url(#shadow)">
+    <rect width="220" height="180" rx="5" fill="#ffffff" stroke="#6c5ce7" stroke-width="2" />
+    <rect width="220" height="40" rx="5" fill="#6c5ce7" />
+    <text x="110" y="25" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="middle">JOBS</text>
+    
+    <text x="15" y="65" font-family="Arial, sans-serif" font-size="14" fill="#2d3436">
+      <tspan font-weight="bold" fill="#d63031">PK  id (BIGINT)</tspan>
+      <tspan x="15" dy="25" font-weight="bold" fill="#0984e3">FK  employer\_id (BIGINT)</tspan>
+      <tspan x="15" dy="25">title (VARCHAR)</tspan>
+      <tspan x="15" dy="25">description (TEXT)</tspan>
+      <tspan x="15" dy="25">required\_skills (TEXT)</tspan>
+    </text>
+  </g>
+
+  <!-- APPLICATIONS Table -->
+  <g transform="translate(500, 380)" filter="url(#shadow)">
+    <rect width="220" height="180" rx="5" fill="#ffffff" stroke="#fdcb6e" stroke-width="2" />
+    <rect width="220" height="40" rx="5" fill="#fdcb6e" />
+    <text x="110" y="25" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#2d3436" text-anchor="middle">APPLICATIONS</text>
+    
+    <text x="15" y="65" font-family="Arial, sans-serif" font-size="14" fill="#2d3436">
+      <tspan font-weight="bold" fill="#d63031">PK  id (BIGINT)</tspan>
+      <tspan x="15" dy="25" font-weight="bold" fill="#0984e3">FK  job\_id (BIGINT)</tspan>
+      <tspan x="15" dy="25" font-weight="bold" fill="#0984e3">FK  user\_id (BIGINT)</tspan>
+      <tspan x="15" dy="25">match\_score (INT)</tspan>
+      <tspan x="15" dy="25">status (VARCHAR)</tspan>
+    </text>
+  </g>
+
+  <!-- Relationships -->
+  <!-- User to Resume (1:1 or 1:N) -->
+  <path d="M 190 280 L 190 380" stroke="#2d3436" stroke-width="2" marker-start="url(#one)" marker-end="url(#crowfoot)" fill="none" />
+  <text x="205" y="335" font-family="Arial, sans-serif" font-size="12" fill="#2d3436">1:N</text>
+
+  <!-- User to Application -->
+  <path d="M 300 240 L 400 240 L 400 450 L 500 450" stroke="#2d3436" stroke-width="2" marker-start="url(#one)" marker-end="url(#crowfoot)" fill="none" />
+  
+  <!-- User to Job (Employer) -->
+  <path d="M 300 150 L 500 150" stroke="#2d3436" stroke-width="2" marker-start="url(#one)" marker-end="url(#crowfoot)" fill="none" />
+  <text x="400" y="140" font-family="Arial, sans-serif" font-size="12" fill="#2d3436" text-anchor="middle">Creates</text>
+
+  <!-- Job to Application -->
+  <path d="M 610 280 L 610 380" stroke="#2d3436" stroke-width="2" marker-start="url(#one)" marker-end="url(#crowfoot)" fill="none" />
+  <text x="625" y="335" font-family="Arial, sans-serif" font-size="12" fill="#2d3436">1:N</text>
+
+</svg>

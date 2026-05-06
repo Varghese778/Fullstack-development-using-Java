@@ -13,6 +13,7 @@
                 <li class="nav-item"><a class="nav-link" th:href="@{/jobs}"><i class="bi bi-search me-1"></i>Browse Jobs</a></li>
                 <li class="nav-item" sec:authorize="hasRole('STUDENT')"><a class="nav-link" th:href="@{/my-applications}"><i class="bi bi-file-earmark-text me-1"></i>My Applications</a></li>
                 <li class="nav-item" sec:authorize="hasRole('STUDENT')"><a class="nav-link" th:href="@{/resumes}"><i class="bi bi-file-person me-1"></i>Resumes</a></li>
+                <li class="nav-item" sec:authorize="hasRole('STUDENT')"><a class="nav-link" th:href="@{/recommendations}"><i class="bi bi-stars me-1"></i>AI Matches</a></li>
                 <li class="nav-item" sec:authorize="hasRole('EMPLOYER')"><a class="nav-link" th:href="@{/employer/my-jobs}"><i class="bi bi-list-check me-1"></i>My Jobs</a></li>
                 <li class="nav-item" sec:authorize="hasRole('EMPLOYER')"><a class="nav-link" th:href="@{/jobs/post}"><i class="bi bi-plus-circle me-1"></i>Post Job</a></li>
                 <li class="nav-item" sec:authorize="hasRole('EMPLOYER')"><a class="nav-link" th:href="@{/employer/applications}"><i class="bi bi-people me-1"></i>Applications</a></li>

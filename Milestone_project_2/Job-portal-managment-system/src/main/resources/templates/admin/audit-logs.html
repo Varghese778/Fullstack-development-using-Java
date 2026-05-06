@@ -7,5 +7,7 @@
         <tbody><tr th:each="log : ${logs.content}"><td th:text="${#temporals.format(log.timestamp, 'dd MMM HH:mm:ss')}"></td><td th:text="${log.userId}"></td><td><span class="badge bg-info" th:text="${log.action}"></span></td><td th:text="${log.resourceType}"></td><td><span class="badge" th:classappend="${log.result == 'SUCCESS'} ? 'bg-success' : 'bg-danger'" th:text="${log.result}"></span></td></tr></tbody></table></div>
 </main>
 <footer th:replace="~{fragments/footer :: footer}"></footer>
+<div th:replace="~{fragments/chatbot-widget :: chatbot}"></div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/chatbot.js}"></script>
 </body></html>

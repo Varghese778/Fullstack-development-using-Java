@@ -16,7 +16,7 @@
                 <tr th:each="app : ${applications.content}">
                     <td><strong th:text="${app.user.fullName}"></strong><br/><small class="text-muted" th:text="${app.user.email}"></small></td>
                     <td th:text="${app.job.jobTitle}"></td>
-                    <td><span class="badge" th:classappend="${app.status.name() == 'SHORTLISTED' ? 'bg-warning text-dark' : app.status.name() == 'REJECTED' ? 'bg-danger' : app.status.name() == 'HIRED' ? 'bg-success' : 'bg-info'}" th:text="${app.status}"></span></td>
+                    <td><span class="badge" th:classappend="${app.status.name() == 'SHORTLISTED' ? 'bg-warning text-dark' : (app.status.name() == 'REJECTED' ? 'bg-danger' : (app.status.name() == 'HIRED' ? 'bg-success' : 'bg-info'))}" th:text="${app.status}"></span></td>
                     <td th:text="${#temporals.format(app.applicationDate, 'dd MMM yyyy')}"></td>
                     <td class="d-flex gap-1">
                         <a th:href="@{/applications/{id}(id=${app.applicationId})}" class="btn btn-sm btn-outline-primary"><i class="bi bi-eye"></i></a>
@@ -31,5 +31,7 @@
     <p th:if="${applications.content.isEmpty()}" class="text-center text-muted py-5">No applications found.</p>
 </main>
 <footer th:replace="~{fragments/footer :: footer}"></footer>
+<div th:replace="~{fragments/chatbot-widget :: chatbot}"></div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/chatbot.js}"></script>
 </body></html>

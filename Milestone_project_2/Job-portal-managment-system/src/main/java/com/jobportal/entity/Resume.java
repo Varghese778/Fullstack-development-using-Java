@@ -63,4 +63,21 @@ public class Resume {
     private Integer applicationCount = 0;
 
     private String checksumHash;
+
+    /**
+     * JSON string of the AI-parsed ResumeProfile.
+     */
+    @Column(length = 10000)
+    private String parsedProfileJson;
+
+    /**
+     * Whether this resume has been parsed by AI.
+     */
+    @Builder.Default
+    private Boolean isAiParsed = false;
+
+    /**
+     * Timestamp of when the AI parsing was completed.
+     */
+    private LocalDateTime parsedAt;
 }

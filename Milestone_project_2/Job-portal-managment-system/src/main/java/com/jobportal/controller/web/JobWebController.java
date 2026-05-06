@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.transaction.annotation.Transactional;
 
 @Controller
 @RequiredArgsConstructor
@@ -24,6 +25,7 @@ public class JobWebController {
     private final JobService jobService;
 
     @GetMapping("/jobs")
+    @Transactional(readOnly = true)
     public String listJobs(@RequestParam(defaultValue = "0") int page,
                            @RequestParam(defaultValue = "12") int size,
                            @RequestParam(required = false) String keyword,
@@ -41,6 +43,7 @@ public class JobWebController {
     }
 
     @GetMapping("/jobs/{id}")
+    @Transactional(readOnly = true)
     public String jobDetail(@PathVariable Long id, Model model) {
         Job job = jobService.getJobById(id);
         Long userId = SecurityUtils.getCurrentUserId();
@@ -63,12 +66,13 @@ public class JobWebController {
     public String postJob(@ModelAttribute JobPostRequest request, RedirectAttributes redirectAttributes) {
         Long empId = SecurityUtils.getCurrentUserId();
         Job job = jobService.createJob(empId, request);
-        redirectAttributes.addFlashAttribute("message", "Job posted as draft! Publish it to make it visible.");
+        redirectAttributes.addFlashAttribute("message", "Job posted and published successfully!");
         return "redirect:/employer/my-jobs";
     }
 
     @GetMapping("/jobs/{id}/edit")
     @PreAuthorize("hasRole('EMPLOYER')")
+    @Transactional(readOnly = true)
     public String editJobForm(@PathVariable Long id, Model model) {
         model.addAttribute("job", jobService.getJobById(id));
         return "job/edit";
@@ -108,6 +112,7 @@ public class JobWebController {
 
     @GetMapping("/employer/my-jobs")
     @PreAuthorize("hasRole('EMPLOYER')")
+    @Transactional(readOnly = true)
     public String myJobs(@RequestParam(defaultValue = "0") int page,
                          @RequestParam(required = false) String status,
                          Model model) {
@@ -124,6 +129,7 @@ public class JobWebController {
     }
 
     @GetMapping("/jobs/search")
+    @Transactional(readOnly = true)
     public String searchJobs(@RequestParam(required = false) String keyword,
                              @RequestParam(defaultValue = "0") int page,
                              Model model) {

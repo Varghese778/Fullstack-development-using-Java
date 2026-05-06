@@ -13,7 +13,7 @@
                     <td><a th:href="@{/jobs/{id}(id=${app.job.jobId})}" class="fw-bold text-decoration-none" th:text="${app.job.jobTitle}"></a></td>
                     <td th:text="${app.job.companyName}"></td>
                     <td>
-                        <span class="badge" th:classappend="${app.status.name() == 'SUBMITTED' ? 'bg-info' : app.status.name() == 'SHORTLISTED' ? 'bg-warning text-dark' : app.status.name() == 'REJECTED' ? 'bg-danger' : app.status.name() == 'HIRED' ? 'bg-success' : app.status.name() == 'WITHDRAWN' ? 'bg-secondary' : 'bg-primary'}" th:text="${app.status}"></span>
+                        <span class="badge" th:classappend="${app.status.name() == 'SUBMITTED' ? 'bg-info' : (app.status.name() == 'SHORTLISTED' ? 'bg-warning text-dark' : (app.status.name() == 'REJECTED' ? 'bg-danger' : (app.status.name() == 'HIRED' ? 'bg-success' : (app.status.name() == 'WITHDRAWN' ? 'bg-secondary' : 'bg-primary'))))}" th:text="${app.status}"></span>
                     </td>
                     <td th:text="${#temporals.format(app.applicationDate, 'dd MMM yyyy')}"></td>
                     <td>
@@ -29,5 +29,7 @@
     <p th:if="${applications.content.isEmpty()}" class="text-center text-muted py-5">You haven't applied to any jobs yet. <a th:href="@{/jobs}">Browse Jobs</a></p>
 </main>
 <footer th:replace="~{fragments/footer :: footer}"></footer>
+<div th:replace="~{fragments/chatbot-widget :: chatbot}"></div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/chatbot.js}"></script>
 </body></html>

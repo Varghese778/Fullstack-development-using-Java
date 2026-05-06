@@ -1,9 +1,12 @@
 package com.jobportal.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jobportal.dto.ai.ResumeProfile;
 import com.jobportal.dto.response.ResumeResponse;
 import com.jobportal.entity.*;
 import com.jobportal.exception.*;
 import com.jobportal.repository.*;
+import com.jobportal.service.ai.ResumeParserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,6 +32,8 @@ public class ResumeService {
     private final ResumeRepository resumeRepository;
     private final ResumeDownloadLogRepository downloadLogRepository;
     private final UserRepository userRepository;
+    private final ResumeParserService resumeParserService;
+    private final ObjectMapper objectMapper;
 
     @Value("${upload.path:./uploads/resumes}")
     private String uploadPath;
@@ -84,10 +89,41 @@ public class ResumeService {
 
             Resume saved = resumeRepository.save(resume);
             log.info("Resume uploaded: {} for user {}", saved.getResumeName(), userId);
+
+            // Trigger async AI parsing
+            triggerAiParsing(saved);
+
             return saved;
         } catch (IOException e) {
             throw new FileStorageException("Failed to upload resume: " + e.getMessage(), e);
         }
+    }
+
+    /**
+     * Trigger AI parsing for a resume. Runs synchronously for now.
+     */
+    public void triggerAiParsing(Resume resume) {
+        try {
+            ResumeProfile profile = resumeParserService.parseResume(resume.getFilePath());
+            if (profile != null && profile.getSkills() != null && !profile.getSkills().isEmpty()) {
+                resume.setParsedProfileJson(objectMapper.writeValueAsString(profile));
+                resume.setIsAiParsed(true);
+                resume.setParsedAt(java.time.LocalDateTime.now());
+                resumeRepository.save(resume);
+                log.info("AI parsing completed for resume {}: {} skills extracted",
+                        resume.getResumeId(), profile.getSkills().size());
+            }
+        } catch (Exception e) {
+            log.error("AI parsing failed for resume {}: {}", resume.getResumeId(), e.getMessage());
+        }
+    }
+
+    /**
+     * Manually re-parse a resume with AI.
+     */
+    public void reparseResume(Long resumeId) {
+        Resume resume = getResume(resumeId);
+        triggerAiParsing(resume);
     }
 
     public List<ResumeResponse> getUserResumes(Long userId) {

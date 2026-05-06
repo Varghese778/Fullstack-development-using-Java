@@ -51,7 +51,9 @@ public class JobService {
                 .skillsRequired(request.getSkillsRequired())
                 .reportingManager(request.getReportingManager())
                 .externalJobUrl(request.getExternalJobUrl())
-                .status(JobStatusEnum.DRAFT)
+                .status(JobStatusEnum.ACTIVE)
+                .isPublished(true)
+                .publishedDate(LocalDateTime.now())
                 .createdBy(employerId)
                 .build();
 

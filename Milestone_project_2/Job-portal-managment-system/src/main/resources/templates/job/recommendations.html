@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/head :: head('AI Recommendations')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments/navbar :: navbar}"></nav>
+<main class="container mt-5 pt-4 flex-grow-1">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <h2 class="fw-bold mb-1"><i class="bi bi-stars me-2"></i>AI Job Recommendations</h2>
+            <p class="text-muted">Personalized matches based on your resume &amp; skills</p>
+        </div>
+        <a th:href="@{/resumes}" class="btn btn-outline-primary"><i class="bi bi-arrow-repeat me-1"></i>Update Resume</a>
+    </div>
+    <!-- Recommendation Cards -->
+    <div class="row g-4">
+        <div th:each="rec : ${recommendations}" class="col-md-6 col-lg-4">
+            <div class="card glass-card h-100 job-card">
+                <div class="card-body d-flex flex-column">
+                    <!-- Match Badge and Title -->
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="card-title fw-bold mb-0" th:text="${rec.jobTitle}">Job Title</h5>
+                        <span class="badge" th:classappend="${rec.matchPercentage >= 70 ? 'bg-success' : (rec.matchPercentage >= 40 ? 'bg-warning' : 'bg-secondary')}"
+                              th:text="${rec.matchPercentage + '% Match'}">75% Match</span>
+                    </div>
+                    <p class="text-muted mb-2"><i class="bi bi-building me-1"></i><span th:text="${rec.companyName}">Company</span></p>
+                    
+                    <!-- Details similar to Browse Jobs -->
+                    <div class="mb-2">
+                        <span th:if="${rec.salaryMin != null}" class="badge bg-primary-subtle text-primary me-1">
+                            <i class="bi bi-currency-rupee"></i><span th:text="${rec.salaryMin + ' - ' + rec.salaryMax}"></span>
+                        </span>
+                        <span th:if="${rec.experienceLevel != null}" class="badge bg-warning-subtle text-warning me-1" th:text="${rec.experienceLevel}">Exp</span>
+                        <span th:if="${rec.employmentType != null}" class="badge bg-success-subtle text-success me-1" th:text="${rec.employmentType}">Type</span>
+                    </div>
+
+                    <!-- Description similar to Browse Jobs -->
+                    <p class="card-text small text-muted flex-grow-1" th:text="${#strings.abbreviate(rec.jobDescription, 120)}">Description</p>
+                    
+                    <!-- AI Insight button + View Details similar to Browse Jobs -->
+                    <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top">
+                        <div>
+                            <small class="text-muted d-block mb-1"><i class="bi bi-eye me-1"></i><span th:text="${rec.viewCount}">0</span> views</small>
+                            <button class="btn btn-sm btn-outline-secondary explain-btn py-0 px-2" style="font-size: 0.75rem;" th:data-jobid="${rec.jobId}"><i class="bi bi-lightbulb"></i> Why this match?</button>
+                        </div>
+                        <a th:href="@{/jobs/{id}(id=${rec.jobId})}" class="btn btn-sm btn-outline-primary">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:if="${#lists.isEmpty(recommendations)}" class="col-12 text-center py-5">
+            <i class="bi bi-file-earmark-person display-1 text-muted"></i>
+            <h4 class="mt-3 text-muted">No recommendations yet</h4>
+            <p>Upload your resume and we'll find the best job matches for you!</p>
+            <a th:href="@{/resumes}" class="btn btn-primary"><i class="bi bi-upload me-1"></i>Upload Resume</a>
+        </div>
+    </div>
+</main>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/app.js}"></script>
+<script th:src="@{/js/chatbot.js}"></script>
+<div th:replace="~{fragments/chatbot-widget :: chatbot}"></div>
+<script>
+document.querySelectorAll('.explain-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const jobId = this.dataset.jobid;
+        const bubble = this.closest('.card-body');
+        let existing = bubble.querySelector('.explanation-text');
+        if (existing) { existing.remove(); return; }
+        this.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+        fetch('/api/recommendations/' + jobId + '/explain')
+            .then(r => r.json())
+            .then(data => {
+                this.innerHTML = '<i class="bi bi-lightbulb me-1"></i>Why?';
+                const p = document.createElement('p');
+                p.className = 'explanation-text small text-muted mt-2 mb-0';
+                p.textContent = data.data || 'Unable to generate explanation.';
+                bubble.appendChild(p);
+            })
+            .catch(() => { this.innerHTML = '<i class="bi bi-lightbulb me-1"></i>Why?'; });
+    });
+});
+</script>
+</body>
+</html>

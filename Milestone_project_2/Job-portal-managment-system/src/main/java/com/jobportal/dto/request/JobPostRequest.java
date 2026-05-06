@@ -21,6 +21,7 @@ public class JobPostRequest {
     private String employmentType;
     private String remotePolicy;
     private Integer numberOfPositions;
+    @org.springframework.format.annotation.DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate applicationDeadline;
     private String benefits;
     private String skillsRequired;

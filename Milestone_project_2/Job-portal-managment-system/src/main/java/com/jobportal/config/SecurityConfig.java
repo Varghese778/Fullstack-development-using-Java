@@ -40,9 +40,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            // CSRF enabled for form submissions, disabled for API
+            // CSRF enabled for form submissions, disabled for API and H2 console
             .csrf(csrf -> csrf
-                .ignoringRequestMatchers("/api/**")
+                .ignoringRequestMatchers("/api/**", "/h2-console/**")
             )
             // Authorization rules
             .authorizeHttpRequests(auth -> auth
@@ -55,6 +55,7 @@ public class SecurityConfig {
                 // Student pages
                 .requestMatchers("/dashboard", "/profile/**", "/my-applications/**", "/resumes/**").hasRole("STUDENT")
                 .requestMatchers("/apply/**").hasRole("STUDENT")
+                .requestMatchers("/recommendations").hasRole("STUDENT")
                 // Employer pages
                 .requestMatchers("/employer/**", "/jobs/post", "/jobs/*/edit").hasRole("EMPLOYER")
                 // Admin pages
@@ -67,6 +68,8 @@ public class SecurityConfig {
                 .requestMatchers("/api/resumes/**").hasAnyRole("STUDENT", "ADMIN")
                 .requestMatchers("/api/notifications/**").authenticated()
                 .requestMatchers("/api/analytics/**").authenticated()
+                .requestMatchers("/api/recommendations/**").hasRole("STUDENT")
+                .requestMatchers("/api/chat/**").authenticated()
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             )

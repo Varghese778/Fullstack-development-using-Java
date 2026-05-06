@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.transaction.annotation.Transactional;
 
 @Controller
 @RequiredArgsConstructor
@@ -52,6 +53,7 @@ public class ApplicationWebController {
 
     @GetMapping("/my-applications")
     @PreAuthorize("hasRole('STUDENT')")
+    @Transactional(readOnly = true)
     public String myApplications(@RequestParam(defaultValue = "0") int page,
                                  @RequestParam(required = false) String status,
                                  Model model) {
@@ -67,6 +69,7 @@ public class ApplicationWebController {
     }
 
     @GetMapping("/applications/{id}")
+    @Transactional(readOnly = true)
     public String applicationDetail(@PathVariable Long id, Model model) {
         Application app = applicationService.getApplication(id);
         model.addAttribute("application", app);
@@ -86,6 +89,7 @@ public class ApplicationWebController {
 
     @GetMapping("/employer/applications")
     @PreAuthorize("hasRole('EMPLOYER')")
+    @Transactional(readOnly = true)
     public String manageApplications(@RequestParam(defaultValue = "0") int page,
                                      @RequestParam(required = false) String status,
                                      Model model) {
@@ -124,6 +128,7 @@ public class ApplicationWebController {
 
     @GetMapping("/employer/applications/{id}/schedule-interview")
     @PreAuthorize("hasRole('EMPLOYER')")
+    @Transactional(readOnly = true)
     public String scheduleInterviewForm(@PathVariable Long id, Model model) {
         model.addAttribute("application", applicationService.getApplication(id));
         model.addAttribute("interviewRequest", new InterviewScheduleRequest());

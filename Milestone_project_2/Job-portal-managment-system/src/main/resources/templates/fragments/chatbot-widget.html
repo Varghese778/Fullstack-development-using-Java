@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:fragment="chatbot" sec:authorize="isAuthenticated()" id="chatbot-widget">
+    <!-- Toggle Button -->
+    <button id="chat-toggle" class="chat-toggle-btn" title="AI Assistant">
+        <i class="bi bi-robot"></i>
+        <span class="chat-pulse"></span>
+    </button>
+    <!-- Chat Window -->
+    <div id="chat-window" class="chat-window d-none">
+        <div class="chat-header">
+            <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-robot"></i>
+                <span class="fw-bold">JobBot AI</span>
+                <span class="chat-status-dot"></span>
+            </div>
+            <div class="d-flex gap-2">
+                <button id="chat-clear" class="btn btn-sm btn-link text-muted p-0" title="Clear chat"><i class="bi bi-arrow-counterclockwise"></i></button>
+                <button id="chat-close" class="btn btn-sm btn-link text-muted p-0" title="Close"><i class="bi bi-x-lg"></i></button>
+            </div>
+        </div>
+        <div id="chat-messages" class="chat-messages">
+            <div class="chat-msg bot">
+                <div class="chat-bubble">Hi! I'm JobBot, your AI career assistant. I can help you find jobs, explain recommendations, and give career advice. What can I help you with?</div>
+            </div>
+        </div>
+        <div id="chat-suggestions" class="chat-suggestions">
+            <button class="suggestion-chip" onclick="sendSuggestion('Show job recommendations')">Job Recommendations</button>
+            <button class="suggestion-chip" onclick="sendSuggestion('Help with my resume')">Resume Help</button>
+            <button class="suggestion-chip" onclick="sendSuggestion('Career advice')">Career Advice</button>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chat-input" class="form-control" placeholder="Ask me anything..." autocomplete="off"/>
+            <button id="chat-send" class="btn btn-primary btn-sm"><i class="bi bi-send-fill"></i></button>
+        </div>
+    </div>
+</div>
+</html>
